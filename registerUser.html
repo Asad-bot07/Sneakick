@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneakick</title>
+    <link rel="stylesheet" href="/output.css">
+    <style>
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none; 
+      }
+    </style>
+</head>
+<body data-page="Exists" class="flex justify-center items-center bg-sky-400/40 min-h-screen hide-scrollbar">
+    <div class="bg-black/40 backdrop-blur-lg rounded-2xl p-6 shadow-lg w-[90%] max-w-md mx-auto mt-10 text-white space-y-4">
+  <h2 class="text-2xl font-bold text-center text-blue-300">User Profile</h2>
+  <div class="space-y-2">
+    <div>
+      <label class="block text-sm font-semibold text-gray-200">Name</label>
+      <p class="bg-white/20 backdrop-blur-md text-blue-100 rounded-md px-3 py-2 font-medium" id="UserName">Ayushi</p>
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-gray-200">Email</label>
+      <p class="bg-white/20 backdrop-blur-md text-blue-100 rounded-md px-3 py-2 font-medium" id="UserEmail">asad@example.com</p>
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-gray-200">Phone Number</label>
+      <p class="bg-white/20 backdrop-blur-md text-blue-100 rounded-md px-3 py-2 font-medium">+91 <span id="UserPhone">9876543210</span></p>
+    </div>
+    <label class="block text-sm font-semibold text-gray-200">Password</label>
+    <div class="flex flex-row">
+      <p class="bg-white/20 backdrop-blur-md text-blue-100 rounded-md px-3 py-2 font-mono tracking-widest select-none w-[90%]" id="UserPass">••••••••••</p>
+      <span class="mt-2 ml-2" id="togglePass">👀</span>
+    </div>
+  </div>
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
