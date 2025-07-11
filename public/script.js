@@ -359,7 +359,7 @@ const Profile = document.getElementById('Profile');
 const savedUser = JSON.parse(localStorage.getItem('user'));
 Profile.addEventListener('click', () => {
   if (savedUser && savedUser.name) {
-    window.location.href = "registerUser.html";
+    window.location.href = "registeruser.html";
   } else {
     window.location.href = "login.html";
   }
