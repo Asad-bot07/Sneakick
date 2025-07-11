@@ -357,15 +357,22 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 const Profile = document.getElementById('Profile')
 const savedUser = JSON.parse(localStorage.getItem('user'))
-if(savedUser.name && savedUser){
-  Profile.addEventListener('click',()=>{
-    window.location.href="registerUser.html"
-  })
-}
-else{
-  Profile.addEventListener('click',()=>{
-    window.location.href="login.html"
-  })
-}
+  Profile.addEventListener('click', () => {
+  if (savedUser && savedUser.name) {
+    window.location.href = "registerUser.html";
+  } else {
+    window.location.href = "login.html";
+  }
+});
+// if(savedUser.name && savedUser){
+//   Profile.addEventListener('click',()=>{
+//     window.location.href="registerUser.html"
+//   })
+// }
+// else{
+//   Profile.addEventListener('click',()=>{
+//     window.location.href="login.html"
+//   })
+// }
 
 });//end of dom
