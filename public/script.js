@@ -425,7 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedUser = JSON.parse(localStorage.getItem("user"));
   Profile.addEventListener("click", () => {
     if (savedUser && savedUser.name) {
-      window.location.href = "registerUser.html";
+      window.location.href = "register-user.html";
     } else {
       window.location.href = "login.html";
     }
