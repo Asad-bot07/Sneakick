@@ -1,14 +1,14 @@
 const imgsrc = [
-  "/Assets/shoe1.png",
-  "/Assets/shoe2.png",
-  "/Assets/shoe3.png",
-  "/Assets/shoe4.png",
-  "/Assets/shoeCop5.png",
-  "/Assets/shoeCop6.png",
-  "/Assets/Shoe7.png",
+  "/Sneakick/Assets/shoe1.png",
+  "/Sneakick/Assets/shoe2.png",
+  "/Sneakick/Assets/shoe3.png",
+  "/Sneakick/Assets/shoe4.png",
+  "/Sneakick/Assets/shoeCop5.png",
+  "/Sneakick/Assets/shoeCop6.png",
+  "/Sneakick/Assets/Shoe7.png",
 ];
-const wishlist = [];
 document.addEventListener("DOMContentLoaded", () => {
+  const wishlist = JSON.parse(localStorage.getItem("wish")) || [];
   const page = document.body.dataset.page;
   const itemAtCart = JSON.parse(localStorage.getItem("shoe")) || [];
   const hasItem = document.getElementById("cartHasItem");
@@ -29,36 +29,82 @@ document.addEventListener("DOMContentLoaded", () => {
     setupHomePage();
   } else if (page === "Cart") {
     setupCartPage();
-  }
-  else if(page === "login"){
+  } else if (page === "login") {
     setupProfilePage();
-  }
-  else if(page === "Exists"){
+  } else if (page === "Exists") {
     setupExistsPage();
+  } else if (page === "wishlist") {
+    setupWishlistPage();
   }
- 
-  function setupExistsPage(){
-    const Name = document.getElementById('UserName');
-    const Email = document.getElementById('UserEmail');
-    const Phone = document.getElementById('UserPhone');
-    const Pass = document.getElementById('UserPass');
-    const existingUser = JSON.parse(localStorage.getItem('user'));
+  function setupWishlistPage() {
+    const menu = document.getElementById("menu");
+    const nav = document.getElementById("nav");
+    const popupMenu = document.getElementById("PopUp");
+    menu.addEventListener("click", () => toggleMenu(popupMenu, nav, 55));
+    window.addEventListener("scroll", () => handleScroll(nav, popupMenu, 55));
+    const WishDiv = document.getElementById("WishlistDiv");
+    if (wishlist.length === 0) WishDiv.classList.remove("hidden");
+    else WishDiv.classList.add("hidden");
+    const wishitems = document.getElementById("Wishes");
+    imgsrc.forEach((src, index) => {
+      const item = wishlist.find((i) => i.name === `Shoe${index}`);
+      if (!item) return;
+
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = item.name;
+      img.classList = `w-full h-full object-cover`;
+      const containItem = document.createElement("div");
+      const Cartbttn = document.createElement("button");
+      Cartbttn.innerHTML = "Add to Cart";
+      Cartbttn.className =
+        "bg-sky-400 p-2 rounded-xl m-1 hover:bg-sky-500 hover:scale-95 transition-all ease-in-out mt-2 duration-300";
+      Cartbttn.addEventListener('click',()=>{
+        const itemFromWishlist = {
+          name: `shoes${index}`,
+          price: item.price,
+        };
+        const existing = itemAtCart.find((shoe) => shoe.name === itemFromWishlist.name);
+        if (existing) {
+          existing.quantity = (existing.quantity || 1) + 1;
+        } else {
+          itemFromWishlist.quantity = 1;
+          itemAtCart.push(itemFromWishlist);
+        }
+        updateLocalStorage();
+        alert("Item added to cart successfully!");
+      })
+      const itemPrice = document.createElement("h1");
+      itemPrice.innerHTML = `Price: ${item.price}`;
+      itemPrice.className = `font-michroma text-2xl font-semibold text-center`;
+      containItem.appendChild(img);
+      containItem.appendChild(itemPrice);
+      containItem.appendChild(Cartbttn)
+      containItem.classList = "flex flex-col m-2 p-2";
+      wishitems.appendChild(containItem);
+    });
+  }
+
+  function setupExistsPage() {
+    const Name = document.getElementById("UserName");
+    const Email = document.getElementById("UserEmail");
+    const Phone = document.getElementById("UserPhone");
+    const Pass = document.getElementById("UserPass");
+    const existingUser = JSON.parse(localStorage.getItem("user"));
     Name.innerHTML = existingUser.name;
     Email.innerHTML = existingUser.email;
     Phone.innerHTML = existingUser.phone;
     let toggleState = true;
-    const toggle = document.getElementById('togglePass')
-    toggle.addEventListener('click',()=>{
-      if(toggleState){
+    const toggle = document.getElementById("togglePass");
+    toggle.addEventListener("click", () => {
+      if (toggleState) {
         Pass.innerHTML = existingUser.pass;
+      } else {
+        Pass.innerHTML = "•••••••••••";
       }
-      else{
-        Pass.innerHTML = "•••••••••••"
-      }
-      toggleState=!toggleState;
-    })
+      toggleState = !toggleState;
+    });
   }
-
 
   function setupHomePage() {
     const carousel = document.getElementById("carousel");
@@ -112,6 +158,26 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Item added to cart successfully!");
       });
     });
+
+    Wishbttn = document.querySelectorAll(".Wishlist");
+    Wishbttn.forEach((bttn, index) => {
+      bttn.addEventListener("click", () => {
+        const ShoePrice = document.getElementById(`price${index + 1}`);
+        const itemAtWishlist = {
+          name: `Shoe${index}`,
+          price: parseInt(ShoePrice.innerHTML),
+        };
+        const existing = wishlist.find((wish) => wish.name === `Shoe${index}`);
+        if (existing) {
+          alert("Already in wishlist");
+          return;
+        }
+        wishlist.push(itemAtWishlist);
+        localStorage.setItem("wish", JSON.stringify(wishlist));
+        alert("Item added to wishlist 💓");
+      });
+    });
+    // console.log(wishlist);
   }
 
   function setupCartPage() {
@@ -237,37 +303,37 @@ document.addEventListener("DOMContentLoaded", () => {
         hasItem.classList.add("hidden");
         cartDiv.classList.remove("hidden");
       });
-      CloseCod.addEventListener('click',()=>{
-        UserInfo.classList.add("hidden")
-      })
-      UPI.addEventListener('click',()=>{
-        UPIPop.classList.remove('hidden')
-      })
-      CloseUpi.addEventListener('click',()=>{
-        UPIPop.classList.add('hidden')
-      })
-      PayUpi.addEventListener('click',()=>{
-        alert('Payment done successfully')
+      CloseCod.addEventListener("click", () => {
+        UserInfo.classList.add("hidden");
+      });
+      UPI.addEventListener("click", () => {
+        UPIPop.classList.remove("hidden");
+      });
+      CloseUpi.addEventListener("click", () => {
+        UPIPop.classList.add("hidden");
+      });
+      PayUpi.addEventListener("click", () => {
+        alert("Payment done successfully");
         cart.innerHTML = "";
         localStorage.removeItem("shoe");
         hasItem.classList.add("hidden");
         cartDiv.classList.remove("hidden");
-        UPIPop.classList.add('hidden')
-        Payment.classList.add("hidden")
-      })
-      PayGpay.addEventListener('click',()=>{
-        alert('Payment done successfully')
+        UPIPop.classList.add("hidden");
+        Payment.classList.add("hidden");
+      });
+      PayGpay.addEventListener("click", () => {
+        alert("Payment done successfully");
         cart.innerHTML = "";
         localStorage.removeItem("shoe");
         hasItem.classList.add("hidden");
         cartDiv.classList.remove("hidden");
-        UPIPop.classList.add('hidden')
-        Payment.classList.add("hidden")
-      })
-      PayCod.addEventListener('click',()=>{
-        Payment.classList.add('hidden')
-        UserInfo.classList.remove('hidden');
-      })
+        UPIPop.classList.add("hidden");
+        Payment.classList.add("hidden");
+      });
+      PayCod.addEventListener("click", () => {
+        Payment.classList.add("hidden");
+        UserInfo.classList.remove("hidden");
+      });
     } else {
       hasItem.classList.add("hidden");
       cartDiv.classList.remove("hidden");
@@ -331,53 +397,52 @@ document.addEventListener("DOMContentLoaded", () => {
   // }
   let count = 0;
   function setupProfilePage() {
-  const RegisterBttn = document.getElementById('registerUser');
-  RegisterBttn.addEventListener('click', () => {
-    const userName = document.getElementById('nameUser').value.trim();
-    const userPhone = document.getElementById('phoneUser').value.trim();
-    const userEmail = document.getElementById('emailUser').value.trim();
-    const userPass = document.getElementById('passwordUser').value.trim();
-    const user = {
-      name: userName,
-      phone: userPhone,
-      email: userEmail,
-      pass: userPass
-    };
-    if (!userName || !userPhone || !userEmail || !userPass) {
-      alert("Please fill in all the fields!");
-      return;
-    }
-    localStorage.setItem('user', JSON.stringify(user));
-    alert('Registered Successfully');
+    const RegisterBttn = document.getElementById("registerUser");
+    RegisterBttn.addEventListener("click", () => {
+      const userName = document.getElementById("nameUser").value.trim();
+      const userPhone = document.getElementById("phoneUser").value.trim();
+      const userEmail = document.getElementById("emailUser").value.trim();
+      const userPass = document.getElementById("passwordUser").value.trim();
+      const user = {
+        name: userName,
+        phone: userPhone,
+        email: userEmail,
+        pass: userPass,
+      };
+      if (!userName || !userPhone || !userEmail || !userPass) {
+        alert("Please fill in all the fields!");
+        return;
+      }
+      localStorage.setItem("user", JSON.stringify(user));
+      alert("Registered Successfully");
 
-    // setTimeout(() => {
-    // }, 100);
-    count+=1
-  });
-}
-const Profile = document.getElementById('Profile');
-const savedUser = JSON.parse(localStorage.getItem('user'));
-Profile.addEventListener('click', () => {
-  if (savedUser && savedUser.name) {
-    window.location.href = "register-user.html";
-  } else {
-    window.location.href = "login.html";
+      // setTimeout(() => {
+      // }, 100);
+      count += 1;
+    });
   }
-});
+  const Profile = document.getElementById("Profile");
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+  Profile.addEventListener("click", () => {
+    if (savedUser && savedUser.name) {
+      window.location.href = "registerUser.html";
+    } else {
+      window.location.href = "login.html";
+    }
+  });
 
-// if(savedUser.name && savedUser){
-//   Profile.addEventListener('click',()=>{
-//     window.location.href="registerUser.html"
-//   })
-// }
-// Profile.addEventListener('click',()=>{
-//   alert("asdas")
-//   window.location.href="login.html"
-// })
-// else{
-//   Profile.addEventListener('click',()=>{
-//     window.location.href="login.html"
-//   })
-// }
-
-});//end of dom
+  // if(savedUser.name && savedUser){
+  //   Profile.addEventListener('click',()=>{
+  //     window.location.href="registerUser.html"
+  //   })
+  // }
+  // Profile.addEventListener('click',()=>{
+  //   alert("asdas")
+  //   window.location.href="login.html"
+  // })
+  // else{
+  //   Profile.addEventListener('click',()=>{
+  //     window.location.href="login.html"
+  //   })
+  // }
+}); //end of dom
