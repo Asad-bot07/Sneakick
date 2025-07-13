@@ -1,11 +1,11 @@
 const imgsrc = [
-  "/Sneakick/Assets/shoe1.png",
-  "/Sneakick/Assets/shoe2.png",
-  "/Sneakick/Assets/shoe3.png",
-  "/Sneakick/Assets/shoe4.png",
-  "/Sneakick/Assets/shoeCop5.png",
-  "/Sneakick/Assets/shoeCop6.png",
-  "/Sneakick/Assets/Shoe7.png",
+  "/Assets/shoe1.png",
+  "/Assets/shoe2.png",
+  "/Assets/shoe3.png",
+  "/Assets/shoe4.png",
+  "/Assets/shoeCop5.png",
+  "/Assets/shoeCop6.png",
+  "/Assets/Shoe7.png",
 ];
 document.addEventListener("DOMContentLoaded", () => {
   const wishlist = JSON.parse(localStorage.getItem("wish")) || [];
