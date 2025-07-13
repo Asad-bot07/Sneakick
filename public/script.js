@@ -59,6 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
       Cartbttn.innerHTML = "Add to Cart";
       Cartbttn.className =
         "bg-sky-400 p-2 rounded-xl m-1 hover:bg-sky-500 hover:scale-95 transition-all ease-in-out mt-2 duration-300";
+      const itemPrice = document.createElement("h1");
+      itemPrice.innerHTML = `Price: ${item.price}`;
+      itemPrice.className = `font-michroma text-2xl font-semibold text-center`;
+      containItem.appendChild(img);
+      containItem.appendChild(itemPrice);
+      containItem.appendChild(Cartbttn)
+      containItem.classList = "flex flex-col m-2 p-2";
+      wishitems.appendChild(containItem);
       Cartbttn.addEventListener('click',()=>{
         const itemFromWishlist = {
           name: `shoes${index}`,
@@ -71,17 +79,12 @@ document.addEventListener("DOMContentLoaded", () => {
           itemFromWishlist.quantity = 1;
           itemAtCart.push(itemFromWishlist);
         }
+        containItem.remove();
+          localStorage.setItem("wish", JSON.stringify(wishlist));
+          updateLocalStorage();
         updateLocalStorage();
         alert("Item added to cart successfully!");
       })
-      const itemPrice = document.createElement("h1");
-      itemPrice.innerHTML = `Price: ${item.price}`;
-      itemPrice.className = `font-michroma text-2xl font-semibold text-center`;
-      containItem.appendChild(img);
-      containItem.appendChild(itemPrice);
-      containItem.appendChild(Cartbttn)
-      containItem.classList = "flex flex-col m-2 p-2";
-      wishitems.appendChild(containItem);
     });
   }
 
